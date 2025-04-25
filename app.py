@@ -7,7 +7,7 @@ app = Flask(__name__)
 # Lê as variáveis de ambiente
 llm_api_base = os.getenv('LLM_API_BASE', '')
 llm_api_key = os.getenv('LLM_API_KEY', '')
-llm_model_name = os.getenv('LLM_MODEL', '')
+llm_model_name = os.getenv('LLM_MODEL_NAME', '')
 
 # Inicializa o LLM
 llm = VLLMOpenAI(
