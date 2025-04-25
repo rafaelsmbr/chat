@@ -41,7 +41,7 @@ const getChatResponse = async (incomingChatDiv) => {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: `prompt=${message}`
+        body: `prompt=${userText}`
     }
 
     // Send POST request to API, get response and set the reponse as paragraph element text
