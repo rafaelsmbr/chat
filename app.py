@@ -1,7 +1,7 @@
 import os
 from flask import Flask, request, render_template, jsonify
 from langchain_community.llms import VLLMOpenAI
-
+import httpx
 app = Flask(__name__)
 
 # Lê as variáveis de ambiente
@@ -14,7 +14,9 @@ llm = VLLMOpenAI(
     openai_api_base=f'{llm_api_base}/v1',
     openai_api_key=llm_api_key,
     model_name=llm_model_name,
-    max_tokens=1024
+    max_tokens=1024,
+    async_client=httpx.AsyncClient(verify=False),
+    http_client=httpx.Client(verify=False)
 )
 
 # Flask routes
