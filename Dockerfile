@@ -4,12 +4,12 @@ FROM python:3.11-slim
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
 
-# Copia os arquivos da aplicação para dentro do container
-COPY . .
+# Copia os arquivos da aplicação e o requirements.txt para o container
+COPY requirements.txt .
+RUN pip install --upgrade pip && pip install -r requirements.txt
 
-# Instala as dependências da aplicação
-RUN pip install --upgrade pip && \
-    pip install flask langchain_community
+# Copia o restante dos arquivos da aplicação
+COPY . .
 
 # Expõe a porta que o Flask usará
 EXPOSE 5000
