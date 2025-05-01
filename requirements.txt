@@ -1,3 +1,10 @@
-flask
-langchain_community
 openai
+flask==2.3.3
+httpx==0.26.0
+pydantic==1.10.14
+pandas==2.2.0
+langchain==0.1.16
+langchain-community==0.0.37
+langchain-core==0.1.50
+langchain-huggingface==0.0.8
+faiss-cpu==1.7.4
