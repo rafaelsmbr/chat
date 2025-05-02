@@ -8,6 +8,12 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+# Copia o script de download do modelo
+COPY download_model.py .
+
+# Baixa o modelo durante o build
+RUN python download_model.py
+
 # Copia o restante dos arquivos da aplicação
 COPY . .
 
