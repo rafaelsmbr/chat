@@ -26,7 +26,7 @@ llm = VLLMOpenAI(
     http_client=httpx.Client(verify=False)
 )
 
-model_name = "sentence-transformers/all-mpnet-base-v2"
+model_name = "./local_all_mpnet_base_v2"
 model_kwargs = {'device': 'cpu'}
 encode_kwargs = {'normalize_embeddings': False}
 embeddings = HuggingFaceEmbeddings(
