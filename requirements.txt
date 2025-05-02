@@ -11,3 +11,4 @@ httpx-sse==0.4.0
 openai==1.76.2
 langchain-core==0.3.56
 langchain-huggingface==0.1.2
+sentence-transformers
