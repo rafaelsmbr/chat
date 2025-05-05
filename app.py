@@ -69,7 +69,7 @@ def ask():
         prompt = ChatPromptTemplate.from_messages(
             [
                 HumanMessagePromptTemplate.from_template(
-                    "Classifique o seguinte texto: '{text}'.\nFormate sua resposta como um objeto JSON seguindo o seguinte esquema:\n{schema}\nCertifique-se de que os valores para 'servicos' e 'tipo_manifestacao' sejam exatamente um dos seguintes:\n\nServiços: {servicos_enums}\nTipos de Manifestação: {tipo_manifestacao_enums}\n"
+                    "Classifique o seguinte texto: '{text}'.\nFormate sua resposta como um objeto JSON estrito, sem nenhum texto adicional ou formatação markdown. O JSON deve seguir o seguinte esquema:\n{schema}\nCertifique-se de que os valores para 'servicos' e 'tipo_manifestacao' sejam exatamente um dos seguintes:\n\nServiços: {servicos_enums}\nTipos de Manifestação: {tipo_manifestacao_enums}\n\nRetorne APENAS o objeto JSON válido."
                 )
             ]
         ).partial(
@@ -86,6 +86,7 @@ def ask():
             response = chain.invoke({"text": texto_para_classificar})
         except OutputParserException as e:
             print(f"Erro ao analisar a saída: {e}")
+            print(f"Saída bruta do LLM: {e.llm_output}")  # Imprima a saída bruta para diagnóstico
             response = {"error": "Erro ao processar a resposta do modelo."}
 
     return jsonify({'response': response})
