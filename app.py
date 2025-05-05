@@ -8,6 +8,7 @@ from pydantic import BaseModel, Field
 from langchain_community.vectorstores import FAISS
 import pandas as pd
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.exceptions import OutputParserException
 
 app = Flask(__name__)
 
