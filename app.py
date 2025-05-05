@@ -26,11 +26,6 @@ llm = VLLMOpenAI(
     http_client=httpx.Client(verify=False)
 )
 
-from sentence_transformers import SentenceTransformer
-
-model = SentenceTransformer("sentence-transformers/all-mpnet-base-v2")
-model.save("./local_all_mpnet_base_v2")
-
 model_name = "./local_all_mpnet_base_v2"
 model_kwargs = {'device': 'cpu'}
 encode_kwargs = {'normalize_embeddings': False}
