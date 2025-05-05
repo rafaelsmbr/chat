@@ -82,9 +82,29 @@ def ask():
         chain = prompt | llm | output_parser
 
         texto_para_classificar = question
-        response = chain.invoke({"text": texto_para_classificar})
+        import json
+        import re
+        from langchain_core.output_parsers import OutputParserException
+        
+        try:
+            response = chain.invoke({"text": texto_para_classificar})
+        except OutputParserException as e:
+            raw_output = e.llm_output
+            print("Saída bruta do modelo:", raw_output)
+        
+            # Try to extract the first valid JSON object from the string
+            match = re.search(r'\{.*\}', raw_output, re.DOTALL)
+            if match:
+                try:
+                    cleaned_json = json.loads(match.group(0))
+                    response = Classification(**cleaned_json)
+                except json.JSONDecodeError as decode_err:
+                    response = {"error": f"Erro ao interpretar JSON: {decode_err}"}
+            else:
+                response = {"error": "Não foi possível extrair JSON da saída do modelo."}
 
-    return response#jsonify({'response': response})
+
+    return jsonify({'response': response})
 
 if __name__ == '__main__':
     app.run(debug=True)
