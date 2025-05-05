@@ -82,15 +82,9 @@ def ask():
         chain = prompt | llm | output_parser
 
         texto_para_classificar = question
+        response = chain.invoke({"text": texto_para_classificar})
 
-        try:
-            response = chain.invoke({"text": texto_para_classificar})
-        except OutputParserException as e:
-            print(f"Erro ao analisar a saída: {e}")
-            print(f"Saída bruta do LLM: {e.llm_output}")  # Imprima a saída bruta para diagnóstico
-            response = {"error": "Erro ao processar a resposta do modelo."}
-
-    return jsonify({'response': response})
+    return response#jsonify({'response': response})
 
 if __name__ == '__main__':
     app.run(debug=True)
