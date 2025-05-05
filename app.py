@@ -69,8 +69,10 @@ def ask():
         prompt = ChatPromptTemplate.from_messages(
             [
                 HumanMessagePromptTemplate.from_template(
-                    "Classifique o seguinte texto: '{text}'.\nFormate sua resposta como um objeto JSON seguindo o seguinte esquema:\n{schema}\n"
-                )
+    "Classifique o seguinte texto: '{text}'.\n"
+    "Responda SOMENTE com um objeto JSON, SEM nenhuma explicação, texto extra ou prefixo.\n"
+    "O JSON deve seguir exatamente este esquema:\n{schema}"
+)
             ]
         ).partial(schema=output_parser.get_format_instructions())
 
