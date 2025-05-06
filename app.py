@@ -60,15 +60,15 @@ def ask():
     question = request.form['prompt']
     docs = retriever.get_relevant_documents(question)
     context = "\n\n".join([d.page_content for d in docs])
-
+    
     context = context if context.strip() else "N/A"
-
+    
     if context == "N/A":
         print("Não tenho base de conhecimento para tratar desse assunto.")
         response = "Não tenho base de conhecimento para tratar desse assunto."
     else:
         output_parser = PydanticOutputParser(pydantic_object=Classification)
-
+    
         prompt = ChatPromptTemplate.from_messages(
             [
                 HumanMessagePromptTemplate.from_template(
@@ -77,19 +77,19 @@ def ask():
             ]
         ).partial(
             schema=output_parser.get_format_instructions(),
-            servicos_enums=Classification.schema()['properties']['servicos']['enum'],
-            tipo_manifestacao_enums=Classification.schema()['properties']['tipo_manifestacao']['enum']
+            servicos_enums=Classification.model_json_schema()['properties']['servicos']['enum'],
+            tipo_manifestacao_enums=Classification.model_json_schema()['properties']['tipo_manifestacao']['enum']
         )
-
+    
         chain = prompt | llm | output_parser
-
+    
         texto_para_classificar = question
         
         try:
             response = chain.invoke({"text": texto_para_classificar})
         except OutputParserException as e:
             raw_output = e.llm_output
-            print("Saída bruta do modelo:", raw_output)
+            #print("Saída bruta do modelo:", raw_output)
         
             # Try to extract the first valid JSON object from the string
             match = re.search(r'\{.*\}', raw_output, re.DOTALL)
@@ -101,9 +101,10 @@ def ask():
                     response = {"error": f"Erro ao interpretar JSON: {decode_err}"}
             else:
                 response = {"error": "Não foi possível extrair JSON da saída do modelo."}
+        print(response.model_dump())
+    
 
-
-    return jsonify({'response': response.dict()})
+    return jsonify({'response': response.model_dump()})
 
 if __name__ == '__main__':
     app.run(debug=True)
