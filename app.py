@@ -101,10 +101,10 @@ def ask():
                     response = {"error": f"Erro ao interpretar JSON: {decode_err}"}
             else:
                 response = {"error": "Não foi possível extrair JSON da saída do modelo."}
-        print(response.model_dump())
+        #print(response.model_dump())
     
 
-    return response#jsonify({'response': response.model_dump()})
+    return jsonify({'response': str(response)})
 
 if __name__ == '__main__':
     app.run(debug=True)
