@@ -9,6 +9,8 @@ from langchain_community.vectorstores import FAISS
 import pandas as pd
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.exceptions import OutputParserException
+import json
+import re
 
 app = Flask(__name__)
 
@@ -82,9 +84,6 @@ def ask():
         chain = prompt | llm | output_parser
 
         texto_para_classificar = question
-        import json
-        import re
-        from langchain_core.output_parsers import OutputParserException
         
         try:
             response = chain.invoke({"text": texto_para_classificar})
