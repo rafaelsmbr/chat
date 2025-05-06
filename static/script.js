@@ -46,8 +46,8 @@ const getChatResponse = async (incomingChatDiv) => {
 
     // Send POST request to API, get response and set the reponse as paragraph element text
     try {
-        const response = await (await fetch(API_URL, requestOptions)).json();
-        pElement.textContent = response["response"].trim();
+        const response = await (await fetch(API_URL, requestOptions))//.json();
+        pElement.textContent = response//["response"].trim();
     } catch (error) { // Add error class to the paragraph element and set error text
         pElement.classList.add("error");
         pElement.textContent = "Oops! Something went wrong while retrieving the response. Please try again.";
