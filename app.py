@@ -103,7 +103,7 @@ def ask():
                 response = {"error": "Não foi possível extrair JSON da saída do modelo."}
 
 
-    return jsonify({'response': response})
+    return jsonify({'response': response.dict()})
 
 if __name__ == '__main__':
     app.run(debug=True)
