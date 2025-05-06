@@ -104,7 +104,7 @@ def ask():
         print(response.model_dump())
     
 
-    return jsonify({'response': response.model_dump()})
+    return response#jsonify({'response': response.model_dump()})
 
 if __name__ == '__main__':
     app.run(debug=True)
