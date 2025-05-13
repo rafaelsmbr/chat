@@ -42,13 +42,25 @@ embeddings = HuggingFaceEmbeddings(
 vector_store = FAISS.load_local(embeddings=embeddings, folder_path="./faiss_db",allow_dangerous_deserialization=True)
  
 # configure document retrieval 
-retriever = vector_store.as_retriever(search_kwargs={'k': 2,"score_threshold": 0.8})
+retriever = vector_store.as_retriever(search_kwargs={'k': 1,"score_threshold": 0.8})
 
 class Classification(BaseModel):
-    servicos: str = Field(enum=["Saneamento básico", "Documentos pessoais", "Educação", "Impostos, dívidas e empresas", "Direitos e cidadania", "Moradia e servições sociais", "CNH, veículos, transporte, multas, licenciamento, transferencia de veiculos",
-    "Atendimento a consumidores", "Saúde", "Serviços municipais"])
-    tipo_manifestacao: str = Field(enum=["Sugestão", "Reclamação", "Solicitação de Providências", "Elogio", "Denúncia", "Pedido de Acesso à Informação"])
-
+    tipo_manifestacao: str = Field(
+        enum=[
+            "Sugestão", "Reclamação", "Solicitação de Providências", 
+            "Elogio", "Denúncia", "Pedido de Acesso à Informação"
+        ],
+        description=(
+            "Tipo de manifestação enviada pelo usuário.\n"
+            "Valores possíveis:\n"
+            "- Sugestão: ideia para melhorar algo\n"
+            "- Reclamação: queixa sobre algo\n"
+            "- Solicitação de Providências: pedido de resolução de problema\n"
+            "- Elogio: reconhecimento positivo\n"
+            "- Denúncia: reporte de irregularidade\n"
+            "- Pedido de Acesso à Informação: solicitação de dados/informações oficiais"
+        )
+    )
 
 # Flask routes
 @app.route('/')
@@ -65,19 +77,21 @@ def ask():
     
     if context == "N/A":
         print("Não tenho base de conhecimento para tratar desse assunto.")
-        response = "Não tenho base de conhecimento para tratar desse assunto."
+        resp = "Não tenho base de conhecimento para tratar desse assunto."
     else:
+        arr = context.split("@@")
+        org = arr[0]
+        service = arr[1]
         output_parser = PydanticOutputParser(pydantic_object=Classification)
     
         prompt = ChatPromptTemplate.from_messages(
             [
                 HumanMessagePromptTemplate.from_template(
-                    "Classifique o seguinte texto: '{text}'.\nFormate sua resposta como um objeto JSON estrito, sem nenhum texto adicional ou formatação markdown. O JSON deve seguir o seguinte esquema:\n{schema}\nCertifique-se de que os valores para 'servicos' e 'tipo_manifestacao' sejam exatamente um dos seguintes:\n\nServiços: {servicos_enums}\nTipos de Manifestação: {tipo_manifestacao_enums}\n\nRetorne APENAS o objeto JSON válido."
+                    "Classifique o seguinte texto: '{text}'.\nFormate sua resposta como um objeto JSON estrito, sem nenhum texto adicional ou formatação markdown. O JSON deve seguir o seguinte esquema:\n{schema}\nCertifique-se de que o valor para 'tipo_manifestacao' sejam exatamente um dos seguintes:\n\nTipos de Manifestação: {tipo_manifestacao_enums}\n\nRetorne APENAS o objeto JSON válido."
                 )
             ]
         ).partial(
             schema=output_parser.get_format_instructions(),
-            servicos_enums=Classification.model_json_schema()['properties']['servicos']['enum'],
             tipo_manifestacao_enums=Classification.model_json_schema()['properties']['tipo_manifestacao']['enum']
         )
     
@@ -102,9 +116,10 @@ def ask():
             else:
                 response = {"error": "Não foi possível extrair JSON da saída do modelo."}
         #print(response.model_dump())
+        resp = "tipo_orgao='" +org+ "', tipo_servico='" +service+ "', " + str(response)
     
 
-    return jsonify({'response': str(response)})
+    return jsonify({'response': resp})
 
 if __name__ == '__main__':
     app.run(debug=True)
