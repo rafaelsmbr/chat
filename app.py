@@ -5,7 +5,6 @@ import httpx
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 from pydantic import BaseModel, Field
-from langchain_community.vectorstores import FAISS
 import pandas as pd
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.exceptions import OutputParserException
@@ -17,7 +16,7 @@ from langgraph.graph import StateGraph, START, END
 from langgraph.types import Command
 from langgraph.checkpoint.memory import MemorySaver
 
-df = pd.read_excel("planilha_atualizada.xlsx")
+df = pd.read_excel("./faiss_db/planilha_atualizada.xlsx")
 
 app = Flask(__name__)
 
