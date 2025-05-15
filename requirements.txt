@@ -12,3 +12,9 @@ openai==1.76.2
 langchain-core==0.3.56
 langchain-huggingface==0.1.2
 sentence-transformers
+openpyxl==3.1.5
+langgraph==0.4.3
+langgraph-checkpoint==2.0.25
+langgraph-checkpoint-sqlite==2.0.7
+langgraph-prebuilt==0.1.8
+langgraph-sdk==0.1.69
