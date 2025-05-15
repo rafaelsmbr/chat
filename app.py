@@ -304,6 +304,10 @@ def ask():
 	# Thread
 	thread = {"configurable": {"thread_id": "1"}}
 
+	tipo_orgao=""
+	tipo_servico=""
+	tipo_manifestacao=""
+
 	# Run the graph until the first interruption
 	for event in graph.stream(initial_input, thread, stream_mode="updates"):
 		print(event)
@@ -315,7 +319,7 @@ def ask():
 			tipo_manifestacao=str(event["step_3"])
 		print("\n")
 
-		return jsonify({'response': tipo_orgao+", "+tipo_servico+", "+tipo_manifestacao})
+	return jsonify({'response': tipo_orgao+", "+tipo_servico+", "+tipo_manifestacao})
 
 if __name__ == '__main__':
 	app.run(debug=True)
