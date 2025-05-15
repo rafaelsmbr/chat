@@ -44,90 +44,69 @@ class State(TypedDict):
 
 class ClassificationOrgao(BaseModel):
 	tipo_orgao: str = Field(
-		enum=["Administração Penitenciária","Agricultura e Abastecimento","Casa Civil","Casa Militar e Defesa Civil","Ciência, Tecnologia e Inovação","Comunicação","Controladoria Geral do Estado","Cultura, Economia e Indústrias Criativas","Desenvolvimento Econômico","Desenvolvimento Social","Desenvolvimento Urbano e Habitação","Direitos da Pessoa com Deficiência","Educação","Esportes","Fazenda e Planejamento","Gestão e Governo Digital","Governo e Relações Institucionais","Justiça e Cidadania","Meio Ambiente, Infraestrutura e Logística","Negócios Internacionais","Parcerias em Investimentos","Políticas para a Mulher","Procuradoria Geral do Estado","Projetos Estratégicos","Saúde","Segurança Pública","Transportes Metropolitanos","Turismo e Viagens","CDHU","Cetesb","Companhia Docas de São Sebastião","CPP","CPSEC","CPTM","Desenvolve SP","EMAE","EMTU","IPT","Metrô","Prodesp","Sabesp","AGEM","AGEMCAMP","AGEMVALE","Arcesp","Artesp","CBPM","Centro Paula Souza","DAEE","DER","Detran.SP","Famema","Famerp","HC Botucatu","HC Famema","HC USP-RP","HC USP-SP","Iamspe","IMESC","Ipem-SP","Ipen","Ipesp","Jucesp","SPPREV","Unesp","Unicamp","USP","Fapesp","FDE","Funap","Fundação Casa","Fundação Florestal","Fundação Itesp","Fundação Padre Anchieta","Fundação Procon-SP","Furp","Memorial da América Latina","Oncocentro","Pró-Sangue","Seade","Prevcom","Univesp"],
+		enum=["AGEM","AGEMVALE","Agricultura e Abastecimento","ARSESP","ARTESP","Casa Civil","Casa Militar e Defesa Civil","CDHU","Centro Paula Souza","Companhia Docas de São Sebastião","Controladoria Geral do Estado","CPTM","Cultura, Economia e Indústrias Criativas","DER","Desenvolve SP","Ciência, Tecnologia e Inovação","Desenvolvimento Econômico","Comunicação","Desenvolvimento Social","Desenvolvimento Urbano e Habitação","Detran.SP","Direitos da Pessoa com Deficiência","Educação","Esportes","Estrada de ferro Campos do Jordão","Famema","Famerp","Fapesp","Fazenda e Planejamento","FDE","Funap","Fundação Casa","Fundação Florestal","Fundação Itesp","Fundação Procon-SP","Furp","Gestão e Governo Digital","Governo e Relações Institucionais","Iamspe","IMESC","Ipem-SP","IPT","Jucesp","Justiça e Cidadania","Meio Ambiente, Infraestrutura e Logística","Memorial da América Latina","Metrô","Parcerias em Investimentos","Políticas para Mulher","Poupatempo","Prevcom","Procuradoria Geral do Estado","Prodesp","Sabesp","Saúde","Seade","Segurança Pública","SPPREV","Transportes Metropolitanos","Turismo e Viagens","Univesp"],
 		description=(
 			"""Valores possíveis para os orgãos:\n
-- Administração Penitenciária: Responsável pela gestão do sistema prisional do estado.
+- AGEM: Planeja e coordena políticas regionais da Baixada Santista.
+- AGEMVALE: Atua no planejamento do Vale do Paraíba e Litoral Norte.
 - Agricultura e Abastecimento: Coordena políticas para o agronegócio e segurança alimentar.
+- Arsesp: Regula serviços de saneamento básico.
+- Artesp: Regula e fiscaliza o transporte rodoviário e concessões.
 - Casa Civil: Articula ações entre o governador e demais secretarias.
 - Casa Militar e Defesa Civil: Atua na proteção civil e apoio a desastres.
-- Ciência, Tecnologia e Inovação: Promove pesquisa, inovação e desenvolvimento tecnológico.
-- Comunicação: Gerencia a comunicação institucional e relações com a mídia.
+- CDHU: Constrói e financia moradias populares.
+- Centro Paula Souza: Administra Etecs e Fatecs no estado.
+- Companhia Docas de São Sebastião: Administra o porto de São Sebastião.
 - Controladoria Geral do Estado: Fiscaliza a legalidade e eficiência dos gastos públicos.
+- CPTM: Opera trens metropolitanos da Grande São Paulo.
 - Cultura, Economia e Indústrias Criativas: Incentiva a produção cultural e setores criativos.
+- DER: Gerencia rodovias estaduais não concedidas.
+- Desenvolve SP: Oferece crédito e apoio ao desenvolvimento empresarial.
+- Ciência, Tecnologia e Inovação: Promove pesquisa, inovação e desenvolvimento tecnológico.
 - Desenvolvimento Econômico: Formula políticas para o crescimento e geração de empregos.
+- Comunicação: Gerencia a comunicação institucional e relações com a mídia
 - Desenvolvimento Social: Executa ações de assistência e inclusão social.
 - Desenvolvimento Urbano e Habitação: Planeja a urbanização e programas habitacionais.
+- Detran.SP: Administra registros e fiscalização de veículos e condutores.
 - Direitos da Pessoa com Deficiência: Garante políticas públicas de inclusão e acessibilidade.
 - Educação: Administra a rede estadual de ensino e políticas educacionais.
 - Esportes: Incentiva a prática esportiva e organiza eventos do setor.
-- Fazenda e Planejamento: Coordena o orçamento, arrecadação e planejamento fiscal.
-- Gestão e Governo Digital: Moderniza a administração pública por meio de tecnologia.
-- Governo e Relações Institucionais: Conduz o relacionamento com entidades e poderes.
-- Justiça e Cidadania: Promove direitos humanos, cidadania e justiça social.
-- Meio Ambiente, Infraestrutura e Logística: Atua na preservação ambiental e obras públicas.
-- Negócios Internacionais: Fortalece relações comerciais e diplomáticas do estado.
-- Parcerias em Investimentos: Desenvolve projetos com o setor privado via PPPs.
-- Políticas para a Mulher: Coordena ações voltadas à equidade de gênero.
-- Procuradoria Geral do Estado: Representa o estado judicialmente e em pareceres legais.
-- Projetos Estratégicos: Gerencia iniciativas prioritárias para o governo.
-- Saúde: Gerencia o SUS estadual e políticas públicas de saúde.
-- Segurança Pública: Coordena as polícias e ações de segurança do estado.
-- Transportes Metropolitanos: Planeja e executa políticas de mobilidade urbana.
-- Turismo e Viagens: Fomenta o turismo e promove os destinos do estado.
-- CDHU: Constrói e financia moradias populares.
-- Cetesb: Fiscaliza e monitora o meio ambiente.
-- Companhia Docas de São Sebastião: Administra o porto de São Sebastião.
-- CPP: Cuida da previdência dos policiais civis paulistas.
-- CPSEC: Atua na gestão de riscos e garantias do estado.
-- CPTM: Opera trens metropolitanos da Grande São Paulo.
-- Desenvolve SP: Oferece crédito e apoio ao desenvolvimento empresarial.
-- EMAE: Gera energia elétrica e administra recursos hídricos.
-- EMTU: Organiza o transporte metropolitano intermunicipal.
-- IPT: Instituto de pesquisa e desenvolvimento tecnológico.
-- Metrô: Opera e expande a malha metroviária paulista.
-- Prodesp: Empresa de tecnologia da informação do governo.
-- Sabesp: Fornece água e saneamento para grande parte do estado.
-- AGEM: Planeja e coordena políticas regionais da Baixada Santista.
-- AGEMCAMP: Atende à Região Metropolitana de Campinas.
-- AGEMVALE: Atua no planejamento do Vale do Paraíba e Litoral Norte.
-- Arcesp: Regula serviços de saneamento básico.
-- Artesp: Regula e fiscaliza o transporte rodoviário e concessões.
-- CBPM: Atua na produção de materiais gráficos e segurança documental.
-- Centro Paula Souza: Administra Etecs e Fatecs no estado.
-- DAEE: Cuida dos recursos hídricos e obras hidráulicas.
-- DER: Gerencia rodovias estaduais não concedidas.
-- Detran.SP: Administra registros e fiscalização de veículos e condutores.
+- Estrada de ferro Campos do Jordão: A Estrada de Ferro Campos do Jordão (EFCJ) é uma ferrovia histórica localizada no estado de São Paulo, Brasil, ligando as cidades de Pindamonhangaba e - Campos do Jordão.
 - Famema: Faculdade de Medicina de Marília.
 - Famerp: Faculdade de Medicina de São José do Rio Preto.
-- HC Botucatu: Hospital universitário da Unesp de Botucatu.
-- HC Famema: Hospital vinculado à Famema.
-- HC USP-RP: Hospital das Clínicas da USP de Ribeirão Preto.
-- HC USP-SP: Hospital das Clínicas da Faculdade de Medicina da USP.
-- Iamspe: Sistema de saúde para servidores públicos estaduais.
-- IMESC: Produz laudos e perícias médico-legais.
-- Ipem-SP: Fiscaliza pesos, medidas e produtos regulamentados.
-- Ipen: Atua em pesquisas nucleares e radioisótopos.
-- Ipesp: Órgão previdenciário e cartorial desativado, com gestão residual.
-- Jucesp: Junta comercial que registra empresas e atos mercantis.
-- SPPREV: Previdência dos servidores públicos estaduais.
-- Unesp: Universidade Estadual Paulista.
-- Unicamp: Universidade Estadual de Campinas.
-- USP: Universidade de São Paulo.
 - Fapesp: Financia pesquisas científicas no estado.
+- Fazenda e Planejamento: Coordena o orçamento, arrecadação e planejamento fiscal.
 - FDE: Apoia obras e serviços para a rede estadual de ensino.
 - Funap: Oferece trabalho e educação para presos.
 - Fundação Casa: Responsável pela reabilitação de menores infratores.
 - Fundação Florestal: Administra unidades de conservação ambiental.
 - Fundação Itesp: Regulariza terras e apoia assentamentos.
-- Fundação Padre Anchieta: Responsável pela TV Cultura e rádios educativas.
 - Fundação Procon-SP: Defesa dos direitos do consumidor.
 - Furp: Produz medicamentos para a rede pública.
+- Gestão e Governo Digital: Moderniza a administração pública por meio de tecnologia.
+- Governo e Relações Institucionais: Conduz o relacionamento com entidades e poderes.
+- Iamspe: Sistema de saúde para servidores públicos estaduais.
+- IMESC: Produz laudos e perícias médico-legais.
+- Ipem-SP: Fiscaliza pesos, medidas e produtos regulamentados.
+- IPT: Instituto de pesquisa e desenvolvimento tecnológico.
+- Jucesp: Junta comercial que registra empresas e atos mercantis.
+- Justiça e Cidadania: Promove direitos humanos, cidadania e justiça social.
+- Meio Ambiente, Infraestrutura e Logística: Atua na preservação ambiental e obras públicas.
 - Memorial da América Latina: Espaço cultural e de integração latino-americana.
-- Oncocentro: Pesquisa e diagnóstico em oncologia.
-- Pró-Sangue: Banco de sangue que abastece hospitais do estado.
-- Seade: Produz estatísticas e indicadores socioeconômicos.
+- Metrô: Opera e expande a malha metroviária paulista.
+- Parcerias em Investimentos: Desenvolve projetos com o setor privado via PPPs.
+- Políticas para a Mulher: Coordena ações voltadas à equidade de gênero.
+- Poupatempo: O Poupatempo é um programa do Governo do Estado de São Paulo criado para oferecer atendimento rápido, integrado e eficiente à população na prestação de serviços públicos
 - Prevcom: Previdência complementar dos servidores públicos.
+- Procuradoria Geral do Estado: Representa o estado judicialmente e em pareceres legais.
+- Prodesp: Empresa de tecnologia da informação do governo.
+- Sabesp: Fornece água e saneamento para grande parte do estado.
+- Saúde: Gerencia o SUS estadual e políticas públicas de saúde.
+- Seade: Produz estatísticas e indicadores socioeconômicos.
+- Segurança Pública: Coordena as polícias e ações de segurança do estado.
+- SPPREV: Previdência dos servidores públicos estaduais.
+- Transportes Metropolitanos: Planeja e executa políticas de mobilidade urbana.
+- Turismo e Viagens: Fomenta o turismo e promove os destinos do estado.
 - Univesp: Universidade virtual pública com ensino a distância."""
 		)
 	)
