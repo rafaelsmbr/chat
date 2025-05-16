@@ -219,7 +219,7 @@ def step_2(state):
 			lista_enum = parte["servico"].unique().tolist()
 			response = aux_step_2(state,lista_enum)
 			resposta_final.append(response)
-		if len(df_filtrado)>70:
+		if len(df_filtrado)>60:
 			response = aux_step_2(state,resposta_final)
 	return {"resposta2": response} 
 
