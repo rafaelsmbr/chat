@@ -213,7 +213,7 @@ def aux_step_2(state,lista_enum):
 def step_2(state):
 	df_filtrado = df[df.iloc[:, 0] == state['resposta1']]
 	if not df_filtrado.empty:
-		partes = [df_filtrado[i:i+70] for i in range(0, len(df_filtrado), 70)]
+		partes = [df_filtrado[i:i+60] for i in range(0, len(df_filtrado), 60)]
 		resposta_final = []
 		for parte in partes:
 			lista_enum = parte["servico"].unique().tolist()
