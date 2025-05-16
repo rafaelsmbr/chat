@@ -1,5 +1,5 @@
 # Usa uma imagem base do Python
-FROM registry.redhat.io/rhel9/python-311:latest
+FROM python:3.11-slim
 
 # Define o diretório de trabalho dentro do container
 WORKDIR /app
