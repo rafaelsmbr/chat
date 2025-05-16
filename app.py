@@ -300,7 +300,7 @@ def ask():
 			tipo_manifestacao=str(event["step_3"])
 		print("\n")
 
-		return jsonify({'response': tipo_orgao+", "+tipo_servico+", "+tipo_manifestacao})
+	return jsonify({'response': tipo_orgao+", "+tipo_servico+", "+tipo_manifestacao})
 
 if __name__ == '__main__':
 	app.run(debug=True)
