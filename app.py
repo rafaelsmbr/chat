@@ -30,7 +30,7 @@ llm = VLLMOpenAI(
 	openai_api_base=f'{llm_api_base}/v1',
 	openai_api_key=llm_api_key,
 	model_name=llm_model_name,
-	temperature=0,
+	max_tokens=1024,
 	async_client=httpx.AsyncClient(verify=False),
 	http_client=httpx.Client(verify=False)
 )
@@ -44,69 +44,90 @@ class State(TypedDict):
 
 class ClassificationOrgao(BaseModel):
 	tipo_orgao: str = Field(
-		enum=["AGEM","AGEMVALE","Agricultura e Abastecimento","ARSESP","ARTESP","Casa Civil","Casa Militar e Defesa Civil","CDHU","Centro Paula Souza","Companhia Docas de São Sebastião","Controladoria Geral do Estado","CPTM","Cultura, Economia e Indústrias Criativas","DER","Desenvolve SP","Ciência, Tecnologia e Inovação","Desenvolvimento Econômico","Comunicação","Desenvolvimento Social","Desenvolvimento Urbano e Habitação","Detran.SP","Direitos da Pessoa com Deficiência","Educação","Esportes","Estrada de ferro Campos do Jordão","Famema","Famerp","Fapesp","Fazenda e Planejamento","FDE","Funap","Fundação Casa","Fundação Florestal","Fundação Itesp","Fundação Procon-SP","Furp","Gestão e Governo Digital","Governo e Relações Institucionais","Iamspe","IMESC","Ipem-SP","IPT","Jucesp","Justiça e Cidadania","Meio Ambiente, Infraestrutura e Logística","Memorial da América Latina","Metrô","Parcerias em Investimentos","Políticas para Mulher","Poupatempo","Prevcom","Procuradoria Geral do Estado","Prodesp","Sabesp","Saúde","Seade","Segurança Pública","SPPREV","Transportes Metropolitanos","Turismo e Viagens","Univesp"],
+		enum=["Administração Penitenciária","Agricultura e Abastecimento","Casa Civil","Casa Militar e Defesa Civil","Ciência, Tecnologia e Inovação","Comunicação","Controladoria Geral do Estado","Cultura, Economia e Indústrias Criativas","Desenvolvimento Econômico","Desenvolvimento Social","Desenvolvimento Urbano e Habitação","Direitos da Pessoa com Deficiência","Educação","Esportes","Fazenda e Planejamento","Gestão e Governo Digital","Governo e Relações Institucionais","Justiça e Cidadania","Meio Ambiente, Infraestrutura e Logística","Negócios Internacionais","Parcerias em Investimentos","Políticas para a Mulher","Procuradoria Geral do Estado","Projetos Estratégicos","Saúde","Segurança Pública","Transportes Metropolitanos","Turismo e Viagens","CDHU","Cetesb","Companhia Docas de São Sebastião","CPP","CPSEC","CPTM","Desenvolve SP","EMAE","EMTU","IPT","Metrô","Prodesp","Sabesp","AGEM","AGEMCAMP","AGEMVALE","Arcesp","Artesp","CBPM","Centro Paula Souza","DAEE","DER","Detran.SP","Famema","Famerp","HC Botucatu","HC Famema","HC USP-RP","HC USP-SP","Iamspe","IMESC","Ipem-SP","Ipen","Ipesp","Jucesp","SPPREV","Unesp","Unicamp","USP","Fapesp","FDE","Funap","Fundação Casa","Fundação Florestal","Fundação Itesp","Fundação Padre Anchieta","Fundação Procon-SP","Furp","Memorial da América Latina","Oncocentro","Pró-Sangue","Seade","Prevcom","Univesp"],
 		description=(
 			"""Valores possíveis para os orgãos:\n
-- AGEM: Planeja e coordena políticas regionais da Baixada Santista.
-- AGEMVALE: Atua no planejamento do Vale do Paraíba e Litoral Norte.
+- Administração Penitenciária: Responsável pela gestão do sistema prisional do estado.
 - Agricultura e Abastecimento: Coordena políticas para o agronegócio e segurança alimentar.
-- Arsesp: Regula serviços de saneamento básico.
-- Artesp: Regula e fiscaliza o transporte rodoviário e concessões.
 - Casa Civil: Articula ações entre o governador e demais secretarias.
 - Casa Militar e Defesa Civil: Atua na proteção civil e apoio a desastres.
-- CDHU: Constrói e financia moradias populares.
-- Centro Paula Souza: Administra Etecs e Fatecs no estado.
-- Companhia Docas de São Sebastião: Administra o porto de São Sebastião.
-- Controladoria Geral do Estado: Fiscaliza a legalidade e eficiência dos gastos públicos.
-- CPTM: Opera trens metropolitanos da Grande São Paulo.
-- Cultura, Economia e Indústrias Criativas: Incentiva a produção cultural e setores criativos.
-- DER: Gerencia rodovias estaduais não concedidas.
-- Desenvolve SP: Oferece crédito e apoio ao desenvolvimento empresarial.
 - Ciência, Tecnologia e Inovação: Promove pesquisa, inovação e desenvolvimento tecnológico.
+- Comunicação: Gerencia a comunicação institucional e relações com a mídia.
+- Controladoria Geral do Estado: Fiscaliza a legalidade e eficiência dos gastos públicos.
+- Cultura, Economia e Indústrias Criativas: Incentiva a produção cultural e setores criativos.
 - Desenvolvimento Econômico: Formula políticas para o crescimento e geração de empregos.
-- Comunicação: Gerencia a comunicação institucional e relações com a mídia
 - Desenvolvimento Social: Executa ações de assistência e inclusão social.
 - Desenvolvimento Urbano e Habitação: Planeja a urbanização e programas habitacionais.
-- Detran.SP: Administra registros e fiscalização de veículos e condutores.
 - Direitos da Pessoa com Deficiência: Garante políticas públicas de inclusão e acessibilidade.
 - Educação: Administra a rede estadual de ensino e políticas educacionais.
 - Esportes: Incentiva a prática esportiva e organiza eventos do setor.
-- Estrada de ferro Campos do Jordão: A Estrada de Ferro Campos do Jordão (EFCJ) é uma ferrovia histórica localizada no estado de São Paulo, Brasil, ligando as cidades de Pindamonhangaba e - Campos do Jordão.
+- Fazenda e Planejamento: Coordena o orçamento, arrecadação e planejamento fiscal.
+- Gestão e Governo Digital: Moderniza a administração pública por meio de tecnologia.
+- Governo e Relações Institucionais: Conduz o relacionamento com entidades e poderes.
+- Justiça e Cidadania: Promove direitos humanos, cidadania e justiça social.
+- Meio Ambiente, Infraestrutura e Logística: Atua na preservação ambiental e obras públicas.
+- Negócios Internacionais: Fortalece relações comerciais e diplomáticas do estado.
+- Parcerias em Investimentos: Desenvolve projetos com o setor privado via PPPs.
+- Políticas para a Mulher: Coordena ações voltadas à equidade de gênero.
+- Procuradoria Geral do Estado: Representa o estado judicialmente e em pareceres legais.
+- Projetos Estratégicos: Gerencia iniciativas prioritárias para o governo.
+- Saúde: Gerencia o SUS estadual e políticas públicas de saúde.
+- Segurança Pública: Coordena as polícias e ações de segurança do estado.
+- Transportes Metropolitanos: Planeja e executa políticas de mobilidade urbana.
+- Turismo e Viagens: Fomenta o turismo e promove os destinos do estado.
+- CDHU: Constrói e financia moradias populares.
+- Cetesb: Fiscaliza e monitora o meio ambiente.
+- Companhia Docas de São Sebastião: Administra o porto de São Sebastião.
+- CPP: Cuida da previdência dos policiais civis paulistas.
+- CPSEC: Atua na gestão de riscos e garantias do estado.
+- CPTM: Opera trens metropolitanos da Grande São Paulo.
+- Desenvolve SP: Oferece crédito e apoio ao desenvolvimento empresarial.
+- EMAE: Gera energia elétrica e administra recursos hídricos.
+- EMTU: Organiza o transporte metropolitano intermunicipal.
+- IPT: Instituto de pesquisa e desenvolvimento tecnológico.
+- Metrô: Opera e expande a malha metroviária paulista.
+- Prodesp: Empresa de tecnologia da informação do governo.
+- Sabesp: Fornece água e saneamento para grande parte do estado.
+- AGEM: Planeja e coordena políticas regionais da Baixada Santista.
+- AGEMCAMP: Atende à Região Metropolitana de Campinas.
+- AGEMVALE: Atua no planejamento do Vale do Paraíba e Litoral Norte.
+- Arcesp: Regula serviços de saneamento básico.
+- Artesp: Regula e fiscaliza o transporte rodoviário e concessões.
+- CBPM: Atua na produção de materiais gráficos e segurança documental.
+- Centro Paula Souza: Administra Etecs e Fatecs no estado.
+- DAEE: Cuida dos recursos hídricos e obras hidráulicas.
+- DER: Gerencia rodovias estaduais não concedidas.
+- Detran.SP: Administra registros e fiscalização de veículos e condutores.
 - Famema: Faculdade de Medicina de Marília.
 - Famerp: Faculdade de Medicina de São José do Rio Preto.
+- HC Botucatu: Hospital universitário da Unesp de Botucatu.
+- HC Famema: Hospital vinculado à Famema.
+- HC USP-RP: Hospital das Clínicas da USP de Ribeirão Preto.
+- HC USP-SP: Hospital das Clínicas da Faculdade de Medicina da USP.
+- Iamspe: Sistema de saúde para servidores públicos estaduais.
+- IMESC: Produz laudos e perícias médico-legais.
+- Ipem-SP: Fiscaliza pesos, medidas e produtos regulamentados.
+- Ipen: Atua em pesquisas nucleares e radioisótopos.
+- Ipesp: Órgão previdenciário e cartorial desativado, com gestão residual.
+- Jucesp: Junta comercial que registra empresas e atos mercantis.
+- SPPREV: Previdência dos servidores públicos estaduais.
+- Unesp: Universidade Estadual Paulista.
+- Unicamp: Universidade Estadual de Campinas.
+- USP: Universidade de São Paulo.
 - Fapesp: Financia pesquisas científicas no estado.
-- Fazenda e Planejamento: Coordena o orçamento, arrecadação e planejamento fiscal.
 - FDE: Apoia obras e serviços para a rede estadual de ensino.
 - Funap: Oferece trabalho e educação para presos.
 - Fundação Casa: Responsável pela reabilitação de menores infratores.
 - Fundação Florestal: Administra unidades de conservação ambiental.
 - Fundação Itesp: Regulariza terras e apoia assentamentos.
+- Fundação Padre Anchieta: Responsável pela TV Cultura e rádios educativas.
 - Fundação Procon-SP: Defesa dos direitos do consumidor.
 - Furp: Produz medicamentos para a rede pública.
-- Gestão e Governo Digital: Moderniza a administração pública por meio de tecnologia.
-- Governo e Relações Institucionais: Conduz o relacionamento com entidades e poderes.
-- Iamspe: Sistema de saúde para servidores públicos estaduais.
-- IMESC: Produz laudos e perícias médico-legais.
-- Ipem-SP: Fiscaliza pesos, medidas e produtos regulamentados.
-- IPT: Instituto de pesquisa e desenvolvimento tecnológico.
-- Jucesp: Junta comercial que registra empresas e atos mercantis.
-- Justiça e Cidadania: Promove direitos humanos, cidadania e justiça social.
-- Meio Ambiente, Infraestrutura e Logística: Atua na preservação ambiental e obras públicas.
 - Memorial da América Latina: Espaço cultural e de integração latino-americana.
-- Metrô: Opera e expande a malha metroviária paulista.
-- Parcerias em Investimentos: Desenvolve projetos com o setor privado via PPPs.
-- Políticas para a Mulher: Coordena ações voltadas à equidade de gênero.
-- Poupatempo: O Poupatempo é um programa do Governo do Estado de São Paulo criado para oferecer atendimento rápido, integrado e eficiente à população na prestação de serviços públicos
-- Prevcom: Previdência complementar dos servidores públicos.
-- Procuradoria Geral do Estado: Representa o estado judicialmente e em pareceres legais.
-- Prodesp: Empresa de tecnologia da informação do governo.
-- Sabesp: Fornece água e saneamento para grande parte do estado.
-- Saúde: Gerencia o SUS estadual e políticas públicas de saúde.
+- Oncocentro: Pesquisa e diagnóstico em oncologia.
+- Pró-Sangue: Banco de sangue que abastece hospitais do estado.
 - Seade: Produz estatísticas e indicadores socioeconômicos.
-- Segurança Pública: Coordena as polícias e ações de segurança do estado.
-- SPPREV: Previdência dos servidores públicos estaduais.
-- Transportes Metropolitanos: Planeja e executa políticas de mobilidade urbana.
-- Turismo e Viagens: Fomenta o turismo e promove os destinos do estado.
+- Prevcom: Previdência complementar dos servidores públicos.
 - Univesp: Universidade virtual pública com ensino a distância."""
 		)
 	)
@@ -161,58 +182,66 @@ def step_1(state):
 			response = {"error": "Não foi possível extrair JSON da saída do modelo."}
 	temp = json.loads(response.model_dump_json())['tipo_orgao']
 	df_filtrado = df[df.iloc[:,3] == temp.strip()]['orgao'].values[0]
-	print(df_filtrado)
+
 	return {"resposta1": df_filtrado}
 
 
-def step_2(state):
-	df_filtrado = df[df.iloc[:,0] == state['resposta1']].head(90)  
-	if not df_filtrado.empty:
-
-		lista_enum = df_filtrado["servico"].unique().tolist()
-		class ClassificationServico(BaseModel):
-			tipo_servico: str = Field(
-				enum=lista_enum,
-				description="Lista de órgãos filtrados dinamicamente."
-			)
-
-		output_parser = PydanticOutputParser(pydantic_object=ClassificationServico)
-
-		prompt = ChatPromptTemplate.from_messages(
-			[
-				HumanMessagePromptTemplate.from_template(                   
-					"Pela lista de serviço prestados pelo Governo do Estado abaixo, qual o item que melhor atende ao pedido na manifestação?\n"
-					"Lista de serviço: '{tipo_servico_enums}'.\n"
-					"Manifestação: '{text}'.\n"
-					"Responda com um JSON estrito no seguinte formato:\n\n"
-					'{{"tipo_servico": string }}\n\n'
-					"Retorne APENAS o objeto JSON válido, sem explicações ou formatação extra."
-				)
-			]
-		).partial(
-			schema=output_parser.get_format_instructions(),
-			tipo_servico_enums=ClassificationServico.model_json_schema()['properties']['tipo_servico']['enum']
+def aux_step_2(state,lista_enum):
+	class ClassificationServico(BaseModel):
+		tipo_servico: str = Field(
+			enum=lista_enum,
+			description="Lista de serviços filtrados dinamicamente."
 		)
 
-		chain = prompt | llm | output_parser
+	output_parser = PydanticOutputParser(pydantic_object=ClassificationServico)
 
-		try:
-			response = chain.invoke({"text": state['input']})
-		except OutputParserException as e:
-			raw_output = e.llm_output
-			#print("Saída bruta do modelo:", raw_output)
-			# Try to extract the first valid JSON object from the string
-			match = re.search(r'\{.*\}', raw_output, re.DOTALL)
-			if match:
-				try:
-					cleaned_json = json.loads(match.group(0))
-					response = ClassificationServico(**cleaned_json)
-				except json.JSONDecodeError as decode_err:
-					response = {"error": f"Erro ao interpretar JSON: {decode_err}"}
-			else:
-				response = {"error": "Não foi possível extrair JSON da saída do modelo."}
-		print(response)
-		return {"resposta2": response.model_dump_json()}  
+	prompt = ChatPromptTemplate.from_messages(
+		[
+			HumanMessagePromptTemplate.from_template(
+				"Pela lista de serviços prestados pelo Governo do Estado abaixo, qual o item que melhor atende ao pedido na manifestação?\n"
+				"Lista de serviços: '{tipo_servico_enums}'.\n"
+				"Manifestação: '{text}'.\n"
+				"Responda com um JSON estrito no seguinte formato:\n\n"
+				'{{"tipo_servico": string }}\n\n'
+				"Retorne APENAS o objeto JSON válido, sem explicações ou formatação extra."
+			)
+		]
+	).partial(
+		schema=output_parser.get_format_instructions(),
+		tipo_servico_enums=ClassificationServico.model_json_schema()['properties']['tipo_servico']['enum']
+	)
+
+	chain = prompt | llm | output_parser
+
+	try:
+		response = chain.invoke({"text": state['input']})
+	except OutputParserException as e:
+		raw_output = e.llm_output
+		match = re.search(r'\{.*\}', raw_output, re.DOTALL)
+		if match:
+			try:
+				cleaned_json = json.loads(match.group(0))
+				response = ClassificationServico(**cleaned_json)
+			except json.JSONDecodeError as decode_err:
+				print(f"Erro ao interpretar JSON: {decode_err}")
+		else:
+			print("Não foi possível extrair JSON da saída do modelo.")
+
+	return response.model_dump_json()
+
+
+def step_2(state):
+	df_filtrado = df[df.iloc[:, 0] == state['resposta1']]
+	if not df_filtrado.empty:
+		partes = [df_filtrado[i:i+70] for i in range(0, len(df_filtrado), 70)]
+		resposta_final = []
+		for parte in partes:
+			lista_enum = parte["servico"].unique().tolist()
+			response = aux_step_2(state,lista_enum)
+			resposta_final.append(response)
+		if len(df_filtrado)>70:
+			response = aux_step_2(state,resposta_final)
+	return {"resposta2": response} 
 
 def step_3(state):
 	output_parser = PydanticOutputParser(pydantic_object=Classification)
@@ -247,8 +276,8 @@ def step_3(state):
 				response = {"error": f"Erro ao interpretar JSON: {decode_err}"}
 		else:
 			response = {"error": "Não foi possível extrair JSON da saída do modelo."}
-	print(response)
-	return {"resposta3": response.model_dump_json()} 
+
+	return {"resposta3": response.model_dump_json()}  
 
 
 builder = StateGraph(State)
@@ -277,11 +306,7 @@ def ask():
 	initial_input = {"input": request.form['prompt']}
 
 	# Thread
-	thread = {"configurable": {"thread_id": "2"}}
-
-	tipo_orgao=""
-	tipo_servico=""
-	tipo_manifestacao=""
+	thread = {"configurable": {"thread_id": "1"}}
 
 	# Run the graph until the first interruption
 	for event in graph.stream(initial_input, thread, stream_mode="updates"):
@@ -294,7 +319,7 @@ def ask():
 			tipo_manifestacao=str(event["step_3"])
 		print("\n")
 
-	return jsonify({'response': tipo_orgao+", "+tipo_servico+", "+tipo_manifestacao})
+		return jsonify({'response': tipo_orgao+", "+tipo_servico+", "+tipo_manifestacao})
 
 if __name__ == '__main__':
 	app.run(debug=True)
