@@ -136,13 +136,8 @@ def step_1(state):
 	prompt = ChatPromptTemplate.from_messages(
 		[
 			HumanMessagePromptTemplate.from_template(
-				"Classifique o seguinte texto: '{text}'.\n"
-				"Responda com um JSON estrito no seguinte formato:\n\n"
-				'{{"tipo_orgao": string }}\n\n'
-				"O campo 'tipo_orgao' deve conter exatamente um dos seguintes valores:\n"
-				"{tipo_orgao_enums}\n\n"
-				"Retorne APENAS o objeto JSON válido, sem explicações ou formatação extra."
-			)
+					"Classifique o seguinte texto: '{text}'.\nFormate sua resposta como um objeto JSON estrito, sem nenhum texto adicional ou formatação markdown.\nCertifique-se de que o valor para 'tipo_orgao' sejam exatamente um dos seguintes:\n\nTipos de Orgãos: {tipo_orgao_enums}\n\nRetorne APENAS o objeto JSON válido."
+				)
 		]
 	).partial(
 		schema=output_parser.get_format_instructions(),
@@ -164,13 +159,14 @@ def step_1(state):
 				response = {"error": f"Erro ao interpretar JSON: {decode_err}"}
 		else:
 			response = {"error": "Não foi possível extrair JSON da saída do modelo."}
-
-	return {"resposta1": response.model_dump_json()}
+	temp = json.loads(response.model_dump_json())['tipo_orgao']
+	df_filtrado = df[df.iloc[:,3] == temp.strip()]['orgao'].values[0]
+	print(df_filtrado)
+	return {"resposta1": df_filtrado}
 
 
 def step_2(state):
-	vv = json.loads(state['resposta1'])
-	df_filtrado = df[df.iloc[:,3] == vv['tipo_orgao']]#.head(5)  
+	df_filtrado = df[df.iloc[:,0] == state['resposta1']].head(90)  
 	if not df_filtrado.empty:
 
 		lista_enum = df_filtrado["servico"].unique().tolist()
@@ -215,7 +211,7 @@ def step_2(state):
 					response = {"error": f"Erro ao interpretar JSON: {decode_err}"}
 			else:
 				response = {"error": "Não foi possível extrair JSON da saída do modelo."}
-
+		print(response)
 		return {"resposta2": response.model_dump_json()}  
 
 def step_3(state):
@@ -251,7 +247,7 @@ def step_3(state):
 				response = {"error": f"Erro ao interpretar JSON: {decode_err}"}
 		else:
 			response = {"error": "Não foi possível extrair JSON da saída do modelo."}
-
+	print(response)
 	return {"resposta3": response.model_dump_json()} 
 
 
@@ -281,7 +277,7 @@ def ask():
 	initial_input = {"input": request.form['prompt']}
 
 	# Thread
-	thread = {"configurable": {"thread_id": "1"}}
+	thread = {"configurable": {"thread_id": "2"}}
 
 	tipo_orgao=""
 	tipo_servico=""
